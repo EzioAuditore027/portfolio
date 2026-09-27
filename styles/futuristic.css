@@ -17,9 +17,9 @@
   /* ========================================================
      BACKGROUND IMAGE CONTROLS (Change blur & opacity here!)
      ======================================================== */
-  --bg-ai-blur: 1.5px;         /* 0px = sharpest, 1.5px = subtle, 4px = medium */
-  --bg-ai-opacity: 0.75;       /* 0.1 = faint, 0.75 = crisp & visible, 1.0 = full */
-  --bg-ai-brightness: 0.95;    /* 0.6 = dark/moody, 0.95 = crisp, 1.1 = bright */
+  --bg-ai-blur: 0px;           /* 0px = 100% crystal sharp, no blur */
+  --bg-ai-opacity: 0.85;       /* Increased for maximum detail visibility */
+  --bg-ai-brightness: 0.95;    /* Crisp & balanced */
 
   /* Muted, Sophisticated Accents (No harsh screaming neons) */
   --accent-blue: #38BDF8;
