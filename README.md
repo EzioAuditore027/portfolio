@@ -1,7 +1,7 @@
 # ⚡ Himanshu Satish Shelke — AI Specialist & Quantitative Research Portfolio
 
-[![GitHub Pages](https://img.shields.io/badge/Deployment-GitHub%20Pages-00F2FE?style=for-the-badge&logo=github)](https://github.com/EzioAuditore027)
-[![Domain](https://img.shields.io/badge/Domain-AI%20%7C%20Quant%20Microstructure%20%7C%20Math-A855F7?style=for-the-badge)](https://github.com/EzioAuditore027)
+[![GitHub Pages](https://img.shields.io/badge/Deployment-GitHub%20Pages-00F2FE?style=for-the-badge&logo=github)](https://github.com/HimanshuShelke027)
+[![Domain](https://img.shields.io/badge/Domain-AI%20%7C%20Quant%20Microstructure%20%7C%20Math-A855F7?style=for-the-badge)](https://github.com/HimanshuShelke027)
 [![License](https://img.shields.io/badge/License-MIT-00FFA3?style=for-the-badge)](LICENSE)
 [![GATE](https://img.shields.io/badge/GATE%202026-Data%20Science%20%26%20AI%20Qualified-38BDF8?style=for-the-badge)](CV_HimanshuShelke.pdf)
 
@@ -74,7 +74,7 @@ Because this repository uses high-performance native HTML5, modern CSS3 variable
 ### Using Python:
 ```bash
 # Clone the repository
-git clone https://github.com/EzioAuditore027/portfolio.git
+git clone https://github.com/HimanshuShelke027/portfolio.git
 cd portfolio
 
 # Start a local static HTTP server
@@ -91,10 +91,10 @@ npx serve .
 
 ## 🌐 Deploy to GitHub Pages in 1 Click
 
-1. Create a repository on GitHub (e.g., `portfolio` or `EzioAuditore027.github.io`).
+1. Create a repository on GitHub (e.g., `portfolio` or `HimanshuShelke027.github.io`).
 2. Push this repository to your remote:
    ```bash
-   git remote add origin https://github.com/EzioAuditore027/portfolio.git
+   git remote add origin https://github.com/HimanshuShelke027/portfolio.git
    git branch -M main
    git push -u origin main
    ```
@@ -102,7 +102,7 @@ npx serve .
    - Go to **Settings** > **Pages**.
    - Under **Build and deployment** > **Source**, choose **Deploy from a branch**.
    - Select Branch: **`main`**, Folder: **`/(root)`**, and click **Save**.
-4. Your portfolio will be live at `https://EzioAuditore027.github.io/portfolio` in seconds!
+4. Your portfolio will be live at `https://HimanshuShelke027.github.io/portfolio` in seconds!
 
 ---
 
@@ -113,5 +113,5 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 **Himanshu Satish Shelke**  
 *Integrated Master of Science (BS-MS) Scholar in Data Science & Mathematics*  
 **Indian Institute of Science Education and Research (IISER), Thiruvananthapuram**  
-* GitHub: [@EzioAuditore027](https://github.com/EzioAuditore027)  
+* GitHub: [@HimanshuShelke027](https://github.com/HimanshuShelke027)  
 * Email: [himanshu@example.com](mailto:himanshu@example.com)

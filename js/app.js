@@ -46,7 +46,7 @@ aligned_df = df_eth.join_asof(
     on="timestamp",
     strategy="backward"
 )`,
-    repoUrl: "https://github.com/EzioAuditore027"
+    repoUrl: "https://github.com/HimanshuShelke027"
   },
 
   multivariate_risk: {
@@ -87,7 +87,7 @@ res <- Rglpk_solve_LP(
   rhs = c(rep(0, S), 1),
   max = FALSE
 )`,
-    repoUrl: "https://github.com/EzioAuditore027"
+    repoUrl: "https://github.com/HimanshuShelke027"
   },
 
   compact_svd: {
@@ -126,7 +126,7 @@ def compact_svd(A, tol=1e-10):
     U_r = np.dot(A, V_r) / singular_values
     
     return U_r, np.diag(singular_values), V_r.T`,
-    repoUrl: "https://github.com/EzioAuditore027"
+    repoUrl: "https://github.com/HimanshuShelke027"
   },
 
   edge_pruning: {
@@ -163,7 +163,7 @@ def prune_edge_features(X, y, corr_threshold=0.85):
     sparse_mask = np.abs(lasso.coef_) > 1e-4
     
     return X_reduced[:, sparse_mask]`,
-    repoUrl: "https://github.com/EzioAuditore027"
+    repoUrl: "https://github.com/HimanshuShelke027"
   },
 
   continuous_ppo: {
@@ -200,7 +200,7 @@ def conjugate_gradient(Avp_func, b, nsteps=10, residual_tol=1e-10):
         p = r + beta * p
         rdotr = new_rdotr
     return x`,
-    repoUrl: "https://github.com/EzioAuditore027"
+    repoUrl: "https://github.com/HimanshuShelke027"
   },
 
   parallel_openmp: {
@@ -238,7 +238,7 @@ void execute_parallel_work(int total_tasks, double *data) {
         shared_checksum += local_ops;
     }
 }`,
-    repoUrl: "https://github.com/EzioAuditore027"
+    repoUrl: "https://github.com/HimanshuShelke027"
   }
 };
 
