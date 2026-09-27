@@ -76,6 +76,30 @@ body {
   min-height: 100vh;
 }
 
+/* Blurred AI Neural Network Background & Overlay */
+.ai-bg-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url('../assets/ai_bg.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  filter: blur(26px) brightness(0.6) saturate(1.15);
+  transform: scale(1.06); /* Prevents blur feathering at edges */
+  opacity: 0.55;
+  transition: opacity 0.5s ease;
+}
+
+.ai-bg-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle at 50% 25%, rgba(11, 15, 23, 0.68) 0%, rgba(11, 15, 23, 0.92) 80%);
+}
+
 /* Very subtle grid & gentle atmospheric blur */
 .cyber-background {
   position: fixed;
