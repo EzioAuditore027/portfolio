@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initProjectModal();
   initSmoothScroll();
   initMobileMenu();
+  initButtonRipples();
+  initMagneticButtons();
 });
 
 // Project Data with Detailed Mathematical & Architectural Protocols
@@ -411,3 +413,74 @@ function initMobileMenu() {
     link.addEventListener('click', closeMenu);
   });
 }
+
+// Synaptic Button Ripple Micro-Interaction
+function initButtonRipples() {
+  const interactiveButtons = document.querySelectorAll('.btn-cyber, .tab-cyber-btn, .cyber-link-btn');
+
+  interactiveButtons.forEach(btn => {
+    btn.addEventListener('click', function (e) {
+      const rect = btn.getBoundingClientRect();
+      const diameter = Math.max(rect.width, rect.height) * 2;
+      const radius = diameter / 2;
+
+      // Position relative to click point
+      const clientX = e.clientX || (rect.left + rect.width / 2);
+      const clientY = e.clientY || (rect.top + rect.height / 2);
+
+      const ripple = document.createElement('span');
+      ripple.classList.add('synaptic-ripple');
+      ripple.style.width = `${diameter}px`;
+      ripple.style.height = `${diameter}px`;
+      ripple.style.left = `${clientX - rect.left - radius}px`;
+      ripple.style.top = `${clientY - rect.top - radius}px`;
+
+      // Remove existing ripple if user clicks rapidly
+      const existing = btn.querySelector('.synaptic-ripple');
+      if (existing) existing.remove();
+
+      btn.appendChild(ripple);
+
+      setTimeout(() => {
+        ripple.remove();
+      }, 650);
+    });
+  });
+}
+
+// Subtle Magnetic Hover Tilt for Primary Interactive Elements (Desktop)
+function initMagneticButtons() {
+  // Only enable on pointer-accurate desktop devices
+  if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 1024) return;
+
+  const magneticElements = document.querySelectorAll('.btn-cyber-primary, .brand-hud');
+
+  magneticElements.forEach(elem => {
+    let bounds;
+
+    const onMouseEnter = () => {
+      bounds = elem.getBoundingClientRect();
+    };
+
+    const onMouseMove = (e) => {
+      if (!bounds) bounds = elem.getBoundingClientRect();
+      const mouseX = e.clientX - bounds.left;
+      const mouseY = e.clientY - bounds.top;
+
+      const deltaX = (mouseX - bounds.width / 2) * 0.18;
+      const deltaY = (mouseY - bounds.height / 2) * 0.18;
+
+      elem.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+    };
+
+    const onMouseLeave = () => {
+      elem.style.transform = '';
+      bounds = null;
+    };
+
+    elem.addEventListener('mouseenter', onMouseEnter);
+    elem.addEventListener('mousemove', onMouseMove);
+    elem.addEventListener('mouseleave', onMouseLeave);
+  });
+}
+
