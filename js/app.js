@@ -315,7 +315,26 @@ function initProjectModal() {
       modalTitle.textContent = data.title;
       modalSubtitle.textContent = data.subtitle;
       modalDescription.innerHTML = data.description;
-      modalMath.textContent = data.mathFormula;
+
+      // Render Mathematical Formula with KaTeX
+      if (window.katex) {
+        try {
+          katex.render(data.mathFormula, modalMath, {
+            displayMode: true,
+            throwOnError: false
+          });
+        } catch (err) {
+          modalMath.textContent = data.mathFormula;
+        }
+      } else if (window.renderMathInElement) {
+        modalMath.innerHTML = `$$${data.mathFormula}$$`;
+        renderMathInElement(modalMath, {
+          delimiters: [{ left: '$$', right: '$$', display: true }]
+        });
+      } else {
+        modalMath.textContent = data.mathFormula;
+      }
+
       modalCode.textContent = data.codeSnippet;
       modalRepoBtn.setAttribute('href', data.repoUrl);
 
@@ -329,16 +348,6 @@ function initProjectModal() {
 
       modalOverlay.classList.add('active');
       document.body.style.overflow = 'hidden';
-
-      // Re-trigger KaTeX rendering for dynamic math content
-      if (window.renderMathInElement) {
-        renderMathInElement(modalMath, {
-          delimiters: [
-            { left: '$$', right: '$$', display: true },
-            { left: '$', right: '$', display: false }
-          ]
-        });
-      }
     });
   });
 
