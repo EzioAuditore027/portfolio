@@ -14,13 +14,6 @@
   --bg-card-hover: rgba(24, 34, 54, 0.8);
   --bg-code: #0A0E18;
 
-  /* ========================================================
-     BACKGROUND IMAGE CONTROLS (Change blur & opacity here!)
-     ======================================================== */
-  --bg-ai-blur: 0px;           /* 0px = 100% crystal sharp, no blur */
-  --bg-ai-opacity: 0.85;       /* Increased for maximum detail visibility */
-  --bg-ai-brightness: 0.95;    /* Crisp & balanced */
-
   /* Muted, Sophisticated Accents (No harsh screaming neons) */
   --accent-blue: #38BDF8;
   --accent-ice: #7DD3FC;
@@ -88,22 +81,23 @@ body {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
   background-image: url('../assets/ai_bg.jpg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  filter: blur(var(--bg-ai-blur)) brightness(var(--bg-ai-brightness)) contrast(1.15);
-  transform: scale(1.02); /* Prevents blur feathering at edges */
-  opacity: var(--bg-ai-opacity);
+  filter: blur(2  px) brightness(0.6) saturate(1.15);
+  transform: scale(1.06); /* Prevents blur feathering at edges */
+  opacity: 0.55;
+  transition: opacity 0.5s ease;
 }
 
 .ai-bg-overlay {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 2;
-  background: radial-gradient(circle at 50% 30%, rgba(11, 15, 23, 0.3) 0%, rgba(11, 15, 23, 0.8) 85%);
+  z-index: 0;
+  background: radial-gradient(circle at 50% 25%, rgba(11, 15, 23, 0.68) 0%, rgba(11, 15, 23, 0.92) 80%);
 }
 
 /* Very subtle grid & gentle atmospheric blur */
@@ -111,7 +105,7 @@ body {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 3;
+  z-index: 0;
   background-image: 
     linear-gradient(to right, rgba(148, 163, 184, 0.02) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(148, 163, 184, 0.02) 1px, transparent 1px);
@@ -1145,11 +1139,119 @@ h1, h2, h3, h4, .futuristic-heading {
   margin: 1.1rem 0;
 }
 
-/* Responsive */
+/* ==========================================================================
+   MOBILE & RESPONSIVE ENGINE (Optimized for Mobile Phone Browsers)
+   ========================================================================== */
+
+/* Mobile Hamburger Menu Trigger */
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 32px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1100;
+}
+
+.mobile-menu-btn .bar {
+  height: 2.2px;
+  width: 100%;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.mobile-menu-btn.active .bar:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+  background: var(--accent-blue);
+}
+.mobile-menu-btn.active .bar:nth-child(2) {
+  opacity: 0;
+}
+.mobile-menu-btn.active .bar:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+  background: var(--accent-blue);
+}
+
+/* Mobile Slide-out Navigation Drawer */
+.mobile-nav-drawer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(11, 15, 23, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem 1.8rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-12px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.mobile-nav-drawer.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.mobile-nav-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  width: 100%;
+}
+
+.mobile-nav-link {
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: var(--transition-fast);
+}
+
+.mobile-nav-link span.prefix {
+  color: var(--accent-blue);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+
+.mobile-nav-link:hover {
+  color: var(--accent-blue);
+}
+
+.mobile-nav-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+/* Tablets and Laptops */
 @media (max-width: 1024px) {
   .hero-layout-grid {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 3rem;
   }
   .hud-portrait-container {
     order: -1;
@@ -1168,18 +1270,245 @@ h1, h2, h3, h4, .futuristic-heading {
   }
 }
 
+/* Mobile Phones (Portrait & Landscape) */
 @media (max-width: 768px) {
-  .nav-links-cluster {
-    display: none;
+  /* Navigation adjustments */
+  .nav-links-cluster,
+  .nav-desktop-actions {
+    display: none !important;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+  .nav-container {
+    padding: 0.75rem 1.25rem;
+  }
+
+  /* Spacing & Container */
+  .container {
+    padding: 0 1.2rem;
+  }
+  .section-spacing {
+    padding: 3.5rem 0;
+  }
+  .section-meta-header {
+    margin-bottom: 2.5rem;
+  }
+  .section-main-heading {
+    font-size: 1.95rem;
+    line-height: 1.2;
+  }
+  .section-lead-text {
+    font-size: 0.96rem;
+  }
+
+  /* Telemetry Ticker on Mobile */
+  .telemetry-ticker {
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.6rem 1rem;
+    text-align: center;
+    font-size: 0.68rem;
+  }
+
+  /* Hero Section */
+  .hero-wrapper {
+    padding: 2.2rem 0 2rem 0;
   }
   .hero-full-name {
-    font-size: 2.6rem;
+    font-size: clamp(2.2rem, 8.5vw, 3rem);
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+  .hero-role-title {
+    font-size: 1.15rem;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.1rem;
+  }
+  .hero-lead-summary {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    margin-bottom: 1.8rem;
+  }
+
+  /* HUD Cyber Frame */
+  .hud-cyber-frame {
+    width: 100%;
+    max-width: 310px;
+    height: 380px;
+    margin: 0 auto;
+  }
+
+  /* Telemetry Metrics */
+  .telemetry-metrics-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.8rem;
+  }
+  .telemetry-card {
+    padding: 0.9rem 0.8rem;
+  }
+  .telemetry-num {
+    font-size: 1.3rem;
+  }
+  .telemetry-label {
+    font-size: 0.68rem;
+  }
+
+  /* Hero CTA Buttons */
+  .hero-button-cluster {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+  .hero-button-cluster .btn-cyber {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.2rem;
+    font-size: 0.82rem;
+    min-height: 44px; /* Touch target */
+  }
+
+  /* Swipeable Filter Chips */
+  .filter-tabs-deck {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding: 0 0.5rem 0.6rem 0.5rem;
+    margin-bottom: 2.2rem;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.5rem;
+  }
+  .filter-tabs-deck::-webkit-scrollbar {
+    display: none;
+  }
+  .tab-cyber-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+    font-size: 0.74rem;
+  }
+
+  /* Cyber Grid & Cards */
+  .cyber-grid-container {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+  .cyber-card {
+    padding: 1.4rem 1.2rem;
+  }
+  .card-title {
+    font-size: 1.2rem;
+  }
+  .card-desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .card-math-preview {
+    font-size: 0.76rem;
+    padding: 0.65rem 0.8rem;
+    overflow-x: auto;
+  }
+
+  /* Curriculum Node Cards */
+  .neural-node-card {
+    border-radius: 6px;
+  }
+  .node-trigger-header {
+    padding: 1.1rem 1.1rem;
+    gap: 0.8rem;
+  }
+  .node-header-group {
+    gap: 0.85rem;
+  }
+  .node-hex-id {
+    width: 32px;
+    height: 32px;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+  }
+  .node-titles h3 {
+    font-size: 1.05rem;
+    line-height: 1.3;
+  }
+  .node-titles p {
+    font-size: 0.76rem;
+  }
+  .node-drawer-body {
+    padding: 0 1rem 1.4rem 1rem;
+  }
+  .courses-cyber-deck {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+  .course-pod {
+    padding: 1rem;
+  }
+
+  /* Arsenal Grid */
+  .arsenal-cyber-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .arsenal-box {
+    padding: 1.4rem 1.2rem;
+  }
+
+  /* Distinctions */
+  .honor-terminal-box {
+    padding: 1.5rem 1.2rem;
+  }
+  .honor-title {
+    font-size: 1.22rem;
+  }
+
+  /* Contact Terminal */
+  .terminal-contact-deck {
+    padding: 1.6rem 1.1rem;
+  }
+  .terminal-uplink-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .uplink-pod {
+    padding: 1rem;
+  }
+
+  /* Modal on Mobile */
+  .modal-overlay {
+    padding: 1rem;
+  }
+  .modal-box {
+    padding: 1.5rem 1.15rem;
+    max-height: 90vh;
+    width: 100%;
+  }
+  .modal-title {
+    font-size: 1.35rem;
+    line-height: 1.25;
+  }
+  .modal-close-btn {
+    top: 0.9rem;
+    right: 0.9rem;
+    width: 36px;
+    height: 36px;
+  }
+  .modal-code-block {
+    font-size: 0.76rem;
+    padding: 0.9rem;
+  }
+}
+
+/* Small Screens (iPhone SE, Galaxy A-series <= 380px) */
+@media (max-width: 380px) {
+  .hero-full-name {
+    font-size: 2rem;
   }
   .hud-cyber-frame {
-    width: 290px;
-    height: 360px;
+    height: 340px;
   }
-  .cyber-grid-container {
+  .telemetry-metrics-grid {
     grid-template-columns: 1fr;
   }
 }

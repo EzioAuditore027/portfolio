@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCurriculumAccordions();
   initProjectModal();
   initSmoothScroll();
+  initMobileMenu();
 });
 
 // Project Data with Detailed Mathematical & Architectural Protocols
@@ -383,5 +384,30 @@ function initSmoothScroll() {
         });
       }
     });
+  });
+}
+
+// Mobile Slide-out Menu Controller
+function initMobileMenu() {
+  const menuBtn = document.getElementById('mobileMenuBtn');
+  const drawer = document.getElementById('mobileNavDrawer');
+  if (!menuBtn || !drawer) return;
+
+  const toggleMenu = () => {
+    const isActive = drawer.classList.toggle('active');
+    menuBtn.classList.toggle('active');
+    document.body.style.overflow = isActive ? 'hidden' : '';
+  };
+
+  const closeMenu = () => {
+    drawer.classList.remove('active');
+    menuBtn.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+
+  menuBtn.addEventListener('click', toggleMenu);
+
+  drawer.querySelectorAll('.mobile-nav-link, .mobile-nav-actions a').forEach(link => {
+    link.addEventListener('click', closeMenu);
   });
 }
