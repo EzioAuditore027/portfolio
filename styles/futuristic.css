@@ -45,9 +45,9 @@
 
   /* Neural Backgrounds & Overlays */
   --bg-ai-image: url('../assets/ai_bg.jpg');
-  --bg-ai-filter: blur(2px) brightness(0.6) saturate(1.15);
-  --bg-ai-opacity: 0.55;
-  --bg-overlay-grad: radial-gradient(circle at 50% 25%, rgba(11, 15, 23, 0.5) 0%, rgba(11, 15, 23, 0.88) 80%);
+  --bg-ai-filter: blur(2px) brightness(0.88) saturate(1.2);
+  --bg-ai-opacity: 0.4;
+  --bg-overlay-grad: radial-gradient(circle at 50% 25%, rgba(11, 15, 23, 0.4) 0%, rgba(11, 15, 23, 0.85) 80%);
   --bg-modal-overlay: rgba(11, 15, 23, 0.8);
   --bg-modal: #101623;
   --grid-pattern-color: rgba(148, 163, 184, 0.02);
