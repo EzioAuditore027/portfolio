@@ -141,7 +141,7 @@
         </div>
 
         <p class="hero-lead-summary">
-          Architecting systems at the nexus of <strong>deep neural learning</strong>, <strong>high-frequency market microstructure</strong>, and <strong>numerical optimization</strong>. Bypassing black-box high-level abstractions to construct custom first- and second-order solvers, asynchronous tick pipelines, and hardware-constrained edge compression engines.
+          I'm a Data Science and Mathematics student at IISER Thiruvananthapuram. My work focuses on three overlapping areas: <strong>high-frequency market microstructure</strong>, <strong>continuous reinforcement learning</strong>, and <strong>numerical solvers built from scratch</strong>. I prefer deriving the math on paper before writing the code in C, Python, or R.
         </p>
 
         <!-- Telemetry Metrics Grid -->
@@ -193,10 +193,10 @@
     <div class="philosophy-box">
       <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-violet));"></div>
       <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.2rem;">
-        Modern deep learning and machine learning often prioritize superficial heuristics over fundamental mathematical geometry. My work operates under a strict principle of <strong>first-principles derivation</strong>: rigorously analyzing the underlying topology of data manifolds, extreme value tail distributions, and continuous dynamical systems before compiling them into hardware-aware pipelines.
+        It is easy to import a high-level library, fit a neural network, and call it a day. But when models break down—especially in volatile financial regimes or tight embedded hardware—abstractions hide the real failure modes. I prefer to start with pen and paper. I work out the loss geometry, track down the error bounds, and check condition numbers before touching an IDE.
       </p>
       <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary);">
-        Whether synchronizing asynchronous order book ticks using backward <code>join_asof</code> without look-ahead leakage, engineering scratch Compact SVD protocols that preserve non-zero rank spectra, or deploying continuous-action Proximal Policy Optimization with custom Conjugate Gradient updates, the target is clear: <em>maximum empirical edge with guaranteed mathematical stability</em>.
+        Whether I'm writing custom Conjugate Gradient updates for continuous PPO, building scratch Compact SVD routines that isolate genuine rank, or handling sub-second asynchronous order book merges without look-ahead bias, my goal is straightforward: build systems that are numerically sound, computationally lean, and mathematically defensible.
       </p>
     </div>
   </section>
@@ -228,7 +228,7 @@
         </div>
         <h3 class="card-title">High-Frequency Limit Order Book Predictive Modeling</h3>
         <p class="card-desc">
-          Cross-Asset Momentum Arbitrage via Empirical Copulas and the Lead-Lag Effect between BTC and ETH. Ingests raw Binance Vision tick data (>1.5M rows/asset/day) via Rust-backed Polars, eliminating memory bottlenecking.
+          Can Bitcoin trade flows predict Ethereum price changes before the market catches up? I built a sub-second momentum pipeline on 1.5M+ daily Binance ticks using Polars, joining asynchronous streams backwards in time to eliminate look-ahead bias.
         </p>
         
         <div class="card-math-preview">
@@ -262,7 +262,7 @@
         </div>
         <h3 class="card-title">Multivariate Risk Engine: GARCH-EVT & Vine Copulas</h3>
         <p class="card-desc">
-          Non-linear tail dependence modeling for volatile portfolios. Combines GJR-GARCH leverage filtration with Peaks Over Threshold (POT) Generalized Pareto Distribution, R-Vine Copula selection, and Rockafellar-Uryasev Min-CVaR linear programming.
+          Standard Gaussian models fail catastrophically during market panics. This framework pairs GJR-GARCH with Extreme Value Theory (EVT) and R-Vine copulas to capture joint tail crashes, then solves an exact Rockafellar-Uryasev linear program to minimize Conditional Value-at-Risk.
         </p>
 
         <div class="card-math-preview">
@@ -296,7 +296,7 @@
         </div>
         <h3 class="card-title">High-Dimensional Matrix Reconstruction (Compact SVD)</h3>
         <p class="card-desc">
-          Scratch implementation of explicit Compact Singular Value Decomposition protocols bypassing standard truncated libraries. Strictly isolates non-zero eigenvalues to preserve topological invariants without rank corruption.
+          Most libraries compute truncated SVD without exposing how near-zero singular values distort downstream projections. I implemented a Compact SVD routine from scratch in NumPy, isolating genuine non-zero rank components to prevent numerical drift during compression.
         </p>
 
         <div class="card-math-preview">
@@ -329,7 +329,7 @@
         </div>
         <h3 class="card-title">Hardware-Constrained Edge Intelligence & Feature Pruning</h3>
         <p class="card-desc">
-          High-efficiency ML pipeline for constrained microcontrollers. Eliminates collinear feature subspaces via L1 regularization, accepting a negligible 2% accuracy penalty in exchange for deterministic low-latency execution within tight SRAM boundaries.
+          Deploying ML models to battery-powered microcontrollers means fighting for every byte of SRAM. By stripping out collinear features and applying L1 sparsity, I reduced memory footprint and achieved sub-millisecond inference on low-power silicon with less than a 2% hit to accuracy.
         </p>
 
         <div class="card-math-preview">
@@ -362,7 +362,7 @@
         </div>
         <h3 class="card-title">Stochastic Environments & Continuous Optimization (PPO)</h3>
         <p class="card-desc">
-          Continuous-action Proximal Policy Optimization in a custom PyTorch environment. Bypasses standard black-box optimizers to implement custom Conjugate Gradient descent for second-order natural policy state updates.
+          Standard deep RL relies on first-order Adam optimizers that can take unstable steps in continuous action spaces. In this project, I built a custom PyTorch environment and wrote a Conjugate Gradient solver to compute second-order policy updates directly.
         </p>
 
         <div class="card-math-preview">
@@ -395,7 +395,7 @@
         </div>
         <h3 class="card-title">High-Performance Parallel Computing & Thread Scheduling</h3>
         <p class="card-desc">
-          High-throughput multi-threaded numerical engines in C utilizing OpenMP directives, fine-grained variable scoping (<code>firstprivate</code>, shared memory), and dynamic chunk scheduling to eliminate sequential performance bottlenecks.
+          Scientific code often leaves modern CPU cores idle. I wrote multithreaded numerical routines in C99 using OpenMP, testing dynamic versus guided loop scheduling and fine-grained data scoping to see where Amdahl's Law meets hardware cache limits.
         </p>
 
         <div class="card-math-preview">
@@ -824,7 +824,7 @@
         <h3 class="honor-title">Summer School on Mathematical Finance</h3>
         <div class="honor-affiliation">IISER Pune • Supervised by Dr. Anindya Goswami</div>
         <p class="honor-text">
-          Selected for the competitive summer school from June 3rd to July 24th, 2026. Attended advanced lectures on continuous-time price process modeling, martingale theory, fair pricing of derivatives, and stochastic portfolio optimization. Formulated and presented an independent quantitative investigation to department faculty.
+          Selected for an 8-week summer research fellowship (June 3 – July 24, 2026). Worked through continuous-time price process modeling, martingale theory, derivative pricing, and stochastic portfolio optimization under Dr. Anindya Goswami, culminating in an independent seminar presented to the mathematics faculty.
         </p>
       </div>
 
@@ -834,7 +834,7 @@
         <h3 class="honor-title">GATE 2026: Data Science & AI</h3>
         <div class="honor-affiliation">Graduate Aptitude Test in Engineering • National Level</div>
         <p class="honor-text">
-          Successfully prepared for and qualified in the national-level examination in Data Science and Artificial Intelligence, demonstrating rigorous proficiency across Probability, Linear Algebra, Machine Learning architectures, and Algorithmic Complexities.
+          Qualified the national GATE 2026 examination in Data Science and Artificial Intelligence. The exam evaluated deep fundamentals across linear algebra, calculus, probability distributions, optimization, and core machine learning theory.
         </p>
       </div>
 
@@ -854,7 +854,7 @@
       <div style="text-align: center; margin-bottom: 2.5rem;">
         <h2 style="font-size: 2.2rem; color: #FFFFFF; margin-bottom: 0.5rem;">Direct Terminal Uplink</h2>
         <p style="color: var(--text-muted); font-family: var(--font-mono); font-size: 0.9rem;">
-          Initiate direct communication for research collaborations, quantitative roles, or AI engineering inquiries.
+          Have a question about my research, or want to discuss quantitative finance, mathematical modeling, or systems engineering? Drop me an email or find me on GitHub.
         </p>
       </div>
 

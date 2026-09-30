@@ -19,8 +19,8 @@ const projectDetails = {
     badge: "Quantitative Microstructure & High-Frequency Alpha",
     title: "High-Frequency Limit Order Book Predictive Modeling",
     subtitle: "Cross-Asset Momentum Arbitrage via Empirical Copulas & The Lead-Lag Effect",
-    description: `An end-to-end quantitative research pipeline designed to predict tick-level directional price movements in cryptocurrency markets. Ingests raw high-frequency <code>aggTrades</code> data directly from Binance Vision (>1.5M rows/asset/day) to model structural market momentum.<br><br>
-    The core alpha exploits the <strong>Lead-Lag Effect</strong> between Bitcoin (BTC) and Ethereum (ETH). By utilizing Bitcoin's Trade Flow Imbalance (TFI) as a leading micro-structural indicator, the LightGBM classifier successfully identifies cross-asset momentum arbitrage opportunities for Ethereum with deterministic, out-of-sample ground-truth validation.`,
+    description: `Predicting price direction at the tick level is notoriously difficult because order books are noisy and execution latency is real. In this project, I tested whether aggressive buy/sell imbalances in Bitcoin provide early directional signal for Ethereum.<br><br>
+    I processed raw tick-by-tick trades from Binance Vision—roughly 1.5 million rows per asset daily. To avoid memory bottlenecks, I used Polars instead of pandas, computing rolling Trade Flow Imbalance (TFI) windows and aligning the asynchronous timestamp streams with backward <code>join_asof</code> so no future information leaked into the features. The resulting LightGBM model captured a measurable lead-lag edge on out-of-sample data.`,
     metrics: [
       { label: "Out-of-Sample Ticks", value: "~298,000" },
       { label: "Weighted Accuracy", value: "50.54%" },
@@ -56,10 +56,11 @@ aligned_df = df_eth.join_asof(
     badge: "Econometric & Extreme Value Theory Engine",
     title: "Multivariate Risk Engine: GARCH-EVT & Vine Copulas",
     subtitle: "Non-Linear Tail Dependence & Rockafellar-Uryasev Min-CVaR Optimization",
-    description: `A robust quantitative risk management framework designed for volatile equity portfolios.<br><br>
-    <strong>Phase 1: GJR-GARCH Marginal Filtration</strong>: Captures asymmetric leverage effects and conditional heteroscedasticity. Heavy tail risks are modeled explicitly using Peaks Over Threshold (POT) Generalized Pareto Distribution (GPD) on extreme upper and lower 10% residuals.<br><br>
-    <strong>Phase 2: R-Vine Copula Structure Selection</strong>: Captures complex non-linear tail dependency structures that traditional Gaussian correlation matrices miss.<br><br>
-    <strong>Phase 3: Linear Programming for Min-CVaR</strong>: Implements the Rockafellar & Uryasev linear programming formulation in R to minimize 95% Expected Shortfall (CVaR) with exact budget constraints.`,
+    description: `Standard portfolio theory assumes normal distributions and linear correlation. During severe market selloffs, both assumptions break down completely—correlations spike, and asset losses cluster in the tails.<br><br>
+    To build a more realistic risk engine, I decomposed the problem into three stages:<br>
+    1. <strong>GJR-GARCH + EVT:</strong> Filtered out volatility clustering and fit Generalized Pareto Distributions to the extreme 10% residual tails.<br>
+    2. <strong>R-Vine Copulas:</strong> Modeled pairwise asymmetric dependence trees across assets without forcing a joint Gaussian copula.<br>
+    3. <strong>Min-CVaR Optimization:</strong> Simulated 10,000 market scenarios and solved an exact Rockafellar-Uryasev linear program using <code>Rglpk</code> to allocate portfolio weights that minimize 95% Expected Shortfall.`,
     metrics: [
       { label: "Tail Residual Threshold", value: "Top/Bottom 10%" },
       { label: "Simulated Scenarios", value: "10,000" },
@@ -97,8 +98,8 @@ res <- Rglpk_solve_LP(
     badge: "Numerical Linear Algebra & Dimensional Reduction",
     title: "High-Dimensional Matrix Reconstruction via Compact SVD",
     subtitle: "Rigorous Numerical Factorization from First Principles",
-    description: `Engineered explicit Compact Singular Value Decomposition protocols entirely from scratch, bypassing black-box truncated SVD libraries to ensure mathematically rigorous handling of highly correlated, high-dimensional datasets.<br><br>
-    The algorithm strictly isolates and zeroes out negligible eigenvalues to preserve underlying topological invariants, preventing structural rank corruption and numerical drift during severe data compression.`,
+    description: `Most data science workflows treat SVD as a one-liner call. But in rank-deficient problems or highly collinear data, default numerical solvers can retain small numerical artifacts that corrupt low-rank approximations.<br><br>
+    I wrote a Compact SVD implementation from scratch in NumPy using basic linear algebra primitives ($A^T A$ eigendecomposition). The solver explicitly cuts off eigenvalues below a strict tolerance threshold, retaining only the $r$ true non-zero singular components. This preserves the geometric structure of the subspace while keeping memory and floating-point errors under control.`,
     metrics: [
       { label: "Implementation", value: "Scratch NumPy" },
       { label: "Collinearity Handling", value: "Topological Rank" },
@@ -136,8 +137,8 @@ def compact_svd(A, tol=1e-10):
     badge: "Hardware-Constrained Machine Learning",
     title: "Edge Intelligence & Feature Space Pruning",
     subtitle: "L1 Regularization & Correlation Filtering for Constrained Microcontrollers",
-    description: `Designed and optimized an inference pipeline tailored specifically for execution on resource-constrained embedded microcontrollers and edge hardware with strict power and memory budgets.<br><br>
-    Applied aggressive feature space pruning combining L1-norm sparsity penalties with pairwise correlation elimination. The framework mathematically accepted a negligible 2% reduction in absolute predictive accuracy in exchange for a massive reduction in RAM consumption and sub-millisecond deterministic latency.`,
+    description: `Running machine learning models on low-power microcontrollers forces tough engineering trade-offs: SRAM is tiny, and battery life is limited. You cannot just throw a large random forest onto an ARM Cortex-M.<br><br>
+    To tackle this, I built a two-stage pruning pipeline. First, I compute pairwise Pearson correlations and drop redundant channels above an 0.85 threshold. Second, I run five-fold cross-validated Lasso regression to force uninformative weights strictly to zero. The stripped-down model sacrificed less than 2% in predictive accuracy, but cut memory footprint by over 60% and achieved deterministic sub-millisecond execution.`,
     metrics: [
       { label: "Accuracy Tradeoff", value: "Marginal ~2%" },
       { label: "Inference Latency", value: "< 1ms Deterministic" },
@@ -173,8 +174,8 @@ def prune_edge_features(X, y, corr_threshold=0.85):
     badge: "Continuous Control & Reinforcement Learning",
     title: "Stochastic Continuous Environments & PPO",
     subtitle: "Proximal Policy Optimization with Custom Conjugate Gradient State Updates",
-    description: `Implemented continuous-action Proximal Policy Optimization (PPO) in a custom PyTorch environment to mathematically stabilize extreme variance in volatile high-dimensional continuous spaces.<br><br>
-    Bypassed standard black-box PyTorch optimizers to explicitly formulate and implement a custom Conjugate Gradient descent solver, guaranteeing second-order curvature approximations and maximum computational efficiency during policy network updates.`,
+    description: `First-order optimizers like Adam treat every parameter coordinate equally, which can cause erratic, destructive policy updates in continuous control tasks. Second-order natural policy methods fix this, but computing the full Fisher Information matrix is far too expensive.<br><br>
+    In this project, I built a continuous-action PPO pipeline from scratch in PyTorch. Instead of forming and inverting the full Hessian, I implemented a matrix-free Conjugate Gradient solver that iteratively computes Fisher-vector products. This stabilizes policy updates across difficult continuous landscapes without blowing up the computational budget.`,
     metrics: [
       { label: "Framework", value: "PyTorch Deep RL" },
       { label: "Action Space", value: "Continuous Volatile" },
@@ -210,8 +211,8 @@ def conjugate_gradient(Avp_func, b, nsteps=10, residual_tol=1e-10):
     badge: "High-Performance Computing & Concurrency",
     title: "High-Performance Parallel Computing & Thread Scheduling",
     subtitle: "Shared & Distributed Memory Scientific Acceleration (OpenMP & C)",
-    description: `Engineered high-performance numerical routines in C utilizing OpenMP multi-threaded primitives, dynamic and guided workload scheduling, barrier synchronizations, and fine-grained data scoping (<code>firstprivate</code>, shared memory) to bypass standard sequential overheads.<br><br>
-    Evaluated speedup scaling factors against Amdahl's Law and analyzed cache-line invalidation bottlenecks across multi-core systems.`,
+    description: `Writing parallel code is rarely as simple as adding a <code>#pragma omp parallel for</code>. False sharing, uneven iteration costs, and synchronization barriers can easily wipe out theoretical multicore gains.<br><br>
+    I implemented numerical routines in C99 to profile thread scheduling strategies against Amdahl's Law. By testing static, dynamic (chunk size 64), and guided schedules, and managing variable scope carefully with <code>firstprivate</code> and atomic accumulators, I mapped where memory bus saturation and cache line invalidations cap practical parallel speedup on multicore processors.`,
     metrics: [
       { label: "Language", value: "C99 / C++" },
       { label: "Parallel API", value: "OpenMP Directives" },
