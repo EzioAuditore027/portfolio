@@ -11,7 +11,7 @@
   <link rel="alternate icon" href="favicon.svg">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="styles/futuristic.css">
+  <link rel="stylesheet" href="styles/futuristic.css?v=2.2">
 
   <!-- KaTeX for crisp mathematical formulas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
@@ -20,8 +20,12 @@
           onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
   <script>
     (function () {
-      const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-      document.documentElement.setAttribute('data-theme', savedTheme);
+      try {
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
     })();
   </script>
 </head>
@@ -66,8 +70,8 @@
         <li><a href="#dispatch" class="cyber-nav-link"><span class="prefix">06.</span>Dispatch</a></li>
       </ul>
 
-      <div class="nav-desktop-actions" style="display: flex; gap: 0.8rem; align-items: center;">
-        <!-- Theme Toggle Switch -->
+      <div class="nav-right-actions">
+        <!-- Theme Toggle Switch (Instant Access on Desktop & Mobile) -->
         <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Light/Dark Theme" title="Toggle Light/Dark Theme">
           <span class="theme-icon sun-icon">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -89,22 +93,24 @@
           </span>
         </button>
 
-        <a href="assets/CV_HimanshuShelke.pdf" download class="btn-cyber btn-cyber-primary">
-          <span>RESUME_PDF</span>
-          <span>⤓</span>
-        </a>
-        <a href="https://github.com/EzioAuditore027" target="_blank" rel="noopener noreferrer" class="btn-cyber btn-cyber-outline">
-          <span>GITHUB</span>
-          <span>↗</span>
-        </a>
-      </div>
+        <div class="nav-desktop-actions" style="display: flex; gap: 0.8rem; align-items: center;">
+          <a href="assets/CV_HimanshuShelke.pdf" download class="btn-cyber btn-cyber-primary">
+            <span>RESUME_PDF</span>
+            <span>⤓</span>
+          </a>
+          <a href="https://github.com/EzioAuditore027" target="_blank" rel="noopener noreferrer" class="btn-cyber btn-cyber-outline">
+            <span>GITHUB</span>
+            <span>↗</span>
+          </a>
+        </div>
 
-      <!-- Mobile Hamburger Button -->
-      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
+        <!-- Mobile Hamburger Button -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
     </div>
 
     <!-- Mobile Slide-out Drawer -->
@@ -1015,7 +1021,7 @@
   </div>
 
   <!-- JavaScript -->
-  <script src="js/app.js"></script>
-  <script src="js/neural_network.js"></script>
+  <script src="js/app.js?v=2.2"></script>
+  <script src="js/neural_network.js?v=2.2"></script>
 </body>
 </html>

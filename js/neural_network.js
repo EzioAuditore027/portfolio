@@ -2,6 +2,7 @@
  * Neural Network Synaptic Animation Engine
  * Interactive, high-performance canvas simulation of interconnected neurons,
  * synaptic edges, and traveling action potential signals.
+ * Fully optimized for both desktop pointers and mobile touchscreen interactions.
  */
 
 (function () {
@@ -14,17 +15,18 @@
   let width = (canvas.width = window.innerWidth);
   let height = (canvas.height = window.innerHeight);
 
-  // Settings
+  // Settings tuned for high visibility and fluid performance
   const isMobile = window.innerWidth < 768;
-  const NODE_COUNT = isMobile ? 26 : 52;
-  const CONNECTION_DIST = isMobile ? 100 : 140;
-  const MOUSE_DIST = 160;
+  const NODE_COUNT = isMobile ? 36 : 60;
+  const CONNECTION_DIST = isMobile ? 120 : 155;
+  const MOUSE_DIST = isMobile ? 130 : 180;
 
   let nodes = [];
   let signals = [];
   let mouse = { x: -1000, y: -1000, active: false };
   let animationId = null;
   let isRunning = true;
+  let touchTimer = null;
 
   function isLightMode() {
     return document.documentElement.getAttribute('data-theme') === 'light';
@@ -35,11 +37,11 @@
     constructor() {
       this.x = Math.random() * width;
       this.y = Math.random() * height;
-      this.vx = (Math.random() - 0.5) * 0.45;
-      this.vy = (Math.random() - 0.5) * 0.45;
-      this.radius = Math.random() * 1.5 + 1.2;
-      this.baseAlpha = Math.random() * 0.4 + 0.35;
-      this.color = Math.random() > 0.3 ? '#38BDF8' : '#818CF8'; // Ice-blue or violet
+      this.vx = (Math.random() - 0.5) * (isMobile ? 0.4 : 0.6);
+      this.vy = (Math.random() - 0.5) * (isMobile ? 0.4 : 0.6);
+      this.radius = Math.random() * 1.6 + 1.8; // Noticeable node size
+      this.baseAlpha = Math.random() * 0.35 + 0.55;
+      this.colorType = Math.random() > 0.4 ? 'cyan' : 'violet';
     }
 
     update() {
@@ -50,13 +52,13 @@
       if (this.x < 0 || this.x > width) this.vx *= -1;
       if (this.y < 0 || this.y > height) this.vy *= -1;
 
-      // Subtle mouse interaction
+      // Interactive attraction/repulsion to pointer / touch
       if (mouse.active) {
         const dx = mouse.x - this.x;
         const dy = mouse.y - this.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < MOUSE_DIST) {
-          const force = (1 - dist / MOUSE_DIST) * 0.02;
+          const force = (1 - dist / MOUSE_DIST) * 0.035;
           this.vx += dx * force;
           this.vy += dy * force;
         }
@@ -64,31 +66,43 @@
 
       // Max velocity damping
       const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-      if (speed > 1.2) {
-        this.vx = (this.vx / speed) * 1.2;
-        this.vy = (this.vy / speed) * 1.2;
+      if (speed > 1.4) {
+        this.vx = (this.vx / speed) * 1.4;
+        this.vy = (this.vy / speed) * 1.4;
       }
     }
 
     draw() {
       const isLight = isLightMode();
+      const nodeColor = isLight
+        ? (this.colorType === 'cyan' ? '#0284C7' : '#6366F1')
+        : (this.colorType === 'cyan' ? '#38BDF8' : '#A78BFA');
+
+      // Draw subtle glowing halo around node
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius * 2.2, 0, Math.PI * 2);
+      ctx.fillStyle = nodeColor;
+      ctx.globalAlpha = isLight ? 0.15 : 0.22;
+      ctx.fill();
+
+      // Draw solid node core
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = isLight ? (this.color === '#38BDF8' ? '#0284C7' : '#6366F1') : this.color;
-      ctx.globalAlpha = isLight ? this.baseAlpha * 1.25 : this.baseAlpha;
+      ctx.fillStyle = nodeColor;
+      ctx.globalAlpha = isLight ? 0.9 : this.baseAlpha;
       ctx.fill();
     }
   }
 
-  // Action Potential / Signal Pulse
+  // Action Potential / Synaptic Signal Pulse
   class SynapticSignal {
     constructor(startNode, endNode) {
       this.start = startNode;
       this.end = endNode;
       this.progress = 0;
-      this.speed = Math.random() * 0.015 + 0.012;
-      this.color = Math.random() > 0.5 ? '#38BDF8' : '#34D399';
-      this.size = Math.random() * 1.2 + 1.8;
+      this.speed = Math.random() * 0.018 + 0.014; // Swift, dynamic travel
+      this.isEmerald = Math.random() > 0.4;
+      this.size = Math.random() * 1.2 + 2.4; // Clearly visible pulse bead
     }
 
     update() {
@@ -101,15 +115,23 @@
       const currentX = this.start.x + (this.end.x - this.start.x) * this.progress;
       const currentY = this.start.y + (this.end.y - this.start.y) * this.progress;
 
+      const signalColor = isLight
+        ? (this.isEmerald ? '#059669' : '#0284C7')
+        : (this.isEmerald ? '#34D399' : '#38BDF8');
+
+      // Outer glow bead
+      ctx.beginPath();
+      ctx.arc(currentX, currentY, this.size * 1.6, 0, Math.PI * 2);
+      ctx.fillStyle = signalColor;
+      ctx.globalAlpha = isLight ? 0.35 : 0.45;
+      ctx.fill();
+
+      // Core electric pulse
       ctx.beginPath();
       ctx.arc(currentX, currentY, this.size, 0, Math.PI * 2);
-      const signalColor = isLight ? (this.color === '#34D399' ? '#059669' : '#0284C7') : this.color;
-      ctx.fillStyle = signalColor;
-      ctx.globalAlpha = isLight ? 0.95 : 0.85;
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = signalColor;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.globalAlpha = 0.95;
       ctx.fill();
-      ctx.shadowBlur = 0; // reset
     }
   }
 
@@ -123,7 +145,9 @@
 
   // Spawns occasional synaptic signals between connected nodes
   function maybeSpawnSignal(nodeA, nodeB) {
-    if (signals.length < (isMobile ? 4 : 8) && Math.random() < 0.003) {
+    const maxSignals = isMobile ? 8 : 14;
+    // Spawns frequently enough to always have lively visual feedback
+    if (signals.length < maxSignals && Math.random() < 0.012) {
       signals.push(new SynapticSignal(nodeA, nodeB));
     }
   }
@@ -147,32 +171,32 @@
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < CONNECTION_DIST) {
-          const alpha = (1 - dist / CONNECTION_DIST) * (isLight ? 0.32 : 0.22);
+          const alpha = (1 - dist / CONNECTION_DIST) * (isLight ? 0.38 : 0.32);
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
           ctx.lineTo(nodes[j].x, nodes[j].y);
           ctx.strokeStyle = isLight ? '#0284C7' : '#38BDF8';
           ctx.globalAlpha = alpha;
-          ctx.lineWidth = 1;
+          ctx.lineWidth = 1.2;
           ctx.stroke();
 
           maybeSpawnSignal(nodes[i], nodes[j]);
         }
       }
 
-      // Connect to mouse if close
+      // Connect to mouse/touch if active
       if (mouse.active) {
         const dx = mouse.x - nodes[i].x;
         const dy = mouse.y - nodes[i].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < MOUSE_DIST) {
-          const alpha = (1 - dist / MOUSE_DIST) * (isLight ? 0.38 : 0.28);
+          const alpha = (1 - dist / MOUSE_DIST) * (isLight ? 0.48 : 0.42);
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
           ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = isLight ? '#6366F1' : '#818CF8';
+          ctx.strokeStyle = isLight ? '#6366F1' : '#A78BFA';
           ctx.globalAlpha = alpha;
-          ctx.lineWidth = 1;
+          ctx.lineWidth = 1.4;
           ctx.stroke();
         }
       }
@@ -189,13 +213,14 @@
     animationId = requestAnimationFrame(animate);
   }
 
-  // Event Listeners
+  // Handle Resize
   window.addEventListener('resize', () => {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
     initNodes();
   });
 
+  // Desktop Pointer
   window.addEventListener('mousemove', e => {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
@@ -206,19 +231,29 @@
     mouse.active = false;
   });
 
-  window.addEventListener('touchstart', e => {
-    if (e.touches.length > 0) {
+  // Mobile Touch Interactions
+  function handleTouch(e) {
+    if (e.touches && e.touches.length > 0) {
       mouse.x = e.touches[0].clientX;
       mouse.y = e.touches[0].clientY;
       mouse.active = true;
+      if (touchTimer) clearTimeout(touchTimer);
+      touchTimer = setTimeout(() => {
+        mouse.active = false;
+      }, 1500);
     }
+  }
+
+  window.addEventListener('touchstart', handleTouch, { passive: true });
+  window.addEventListener('touchmove', handleTouch, { passive: true });
+  window.addEventListener('touchend', () => {
+    if (touchTimer) clearTimeout(touchTimer);
+    touchTimer = setTimeout(() => {
+      mouse.active = false;
+    }, 1200);
   }, { passive: true });
 
-  window.addEventListener('touchend', () => {
-    mouse.active = false;
-  });
-
-  // Pause when tab hidden to save CPU/battery
+  // Tab Visibility (pause when tab hidden to conserve battery)
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       isRunning = false;
@@ -229,7 +264,7 @@
     }
   });
 
-  // Start Simulation
+  // Initialize
   initNodes();
   animate();
 })();

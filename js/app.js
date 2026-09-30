@@ -417,18 +417,18 @@ function initMobileMenu() {
 }
 
 // Synaptic Button Ripple Micro-Interaction
+// Synaptic Button Ripple Micro-Interaction (Instant feedback on Desktop & Mobile)
 function initButtonRipples() {
-  const interactiveButtons = document.querySelectorAll('.btn-cyber, .tab-cyber-btn, .cyber-link-btn');
+  const interactiveButtons = document.querySelectorAll('.btn-cyber, .tab-cyber-btn, .cyber-link-btn, .theme-toggle-btn');
 
   interactiveButtons.forEach(btn => {
-    btn.addEventListener('click', function (e) {
+    const handleRipple = (e) => {
       const rect = btn.getBoundingClientRect();
       const diameter = Math.max(rect.width, rect.height) * 2;
       const radius = diameter / 2;
 
-      // Position relative to click point
-      const clientX = e.clientX || (rect.left + rect.width / 2);
-      const clientY = e.clientY || (rect.top + rect.height / 2);
+      const clientX = (e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX) || (rect.left + rect.width / 2);
+      const clientY = (e.touches && e.touches[0] ? e.touches[0].clientY : e.clientY) || (rect.top + rect.height / 2);
 
       const ripple = document.createElement('span');
       ripple.classList.add('synaptic-ripple');
@@ -437,7 +437,6 @@ function initButtonRipples() {
       ripple.style.left = `${clientX - rect.left - radius}px`;
       ripple.style.top = `${clientY - rect.top - radius}px`;
 
-      // Remove existing ripple if user clicks rapidly
       const existing = btn.querySelector('.synaptic-ripple');
       if (existing) existing.remove();
 
@@ -446,13 +445,14 @@ function initButtonRipples() {
       setTimeout(() => {
         ripple.remove();
       }, 650);
-    });
+    };
+
+    btn.addEventListener('pointerdown', handleRipple);
   });
 }
 
 // Subtle Magnetic Hover Tilt for Primary Interactive Elements (Desktop)
 function initMagneticButtons() {
-  // Only enable on pointer-accurate desktop devices
   if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 1024) return;
 
   const magneticElements = document.querySelectorAll('.btn-cyber-primary, .brand-hud');
@@ -488,39 +488,40 @@ function initMagneticButtons() {
 
 // Theme Mode Controller (Dark & Light)
 function initThemeToggle() {
-  const themeToggleBtn = document.getElementById('themeToggleBtn');
-  const mobileThemeToggleBtn = document.getElementById('mobileThemeToggleBtn');
+  const toggleButtons = document.querySelectorAll('.theme-toggle-btn, #themeToggleBtn, #mobileThemeToggleBtn');
 
   const getSavedTheme = () => {
-    return localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    try {
+      const stored = localStorage.getItem('theme');
+      if (stored === 'light' || stored === 'dark') return stored;
+    } catch (e) {}
+    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
   };
 
   const setTheme = (theme) => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+    try {
+      localStorage.setItem('theme', theme);
+    } catch (e) {}
 
-    // Update mobile toggle label if present
-    const mobileLabel = document.querySelector('.mobile-theme-btn .theme-label-text');
-    if (mobileLabel) {
-      mobileLabel.textContent = theme === 'light' ? 'SWITCH_TO_DARK' : 'SWITCH_TO_LIGHT';
-    }
+    // Update any mobile toggle button labels
+    document.querySelectorAll('.mobile-theme-btn .theme-label-text').forEach(label => {
+      label.textContent = theme === 'light' ? 'SWITCH_TO_DARK' : 'SWITCH_TO_LIGHT';
+    });
   };
 
-  const toggleTheme = () => {
+  const toggleTheme = (e) => {
+    if (e) e.preventDefault();
     const current = document.documentElement.getAttribute('data-theme') || 'dark';
     const next = current === 'light' ? 'dark' : 'light';
     setTheme(next);
   };
 
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', toggleTheme);
-  }
+  toggleButtons.forEach(btn => {
+    btn.addEventListener('click', toggleTheme);
+  });
 
-  if (mobileThemeToggleBtn) {
-    mobileThemeToggleBtn.addEventListener('click', toggleTheme);
-  }
-
-  // Set initial text on mobile toggle
+  // Apply initial theme state
   const initialTheme = getSavedTheme();
   setTheme(initialTheme);
 }
