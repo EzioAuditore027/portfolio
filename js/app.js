@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initButtonRipples();
   initMagneticButtons();
+  initThemeToggle();
 });
 
 // Project Data with Detailed Mathematical & Architectural Protocols
@@ -484,4 +485,44 @@ function initMagneticButtons() {
     elem.addEventListener('mouseleave', onMouseLeave);
   });
 }
+
+// Theme Mode Controller (Dark & Light)
+function initThemeToggle() {
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const mobileThemeToggleBtn = document.getElementById('mobileThemeToggleBtn');
+
+  const getSavedTheme = () => {
+    return localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  };
+
+  const setTheme = (theme) => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+
+    // Update mobile toggle label if present
+    const mobileLabel = document.querySelector('.mobile-theme-btn .theme-label-text');
+    if (mobileLabel) {
+      mobileLabel.textContent = theme === 'light' ? 'SWITCH_TO_DARK' : 'SWITCH_TO_LIGHT';
+    }
+  };
+
+  const toggleTheme = () => {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    const next = current === 'light' ? 'dark' : 'light';
+    setTheme(next);
+  };
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', toggleTheme);
+  }
+
+  if (mobileThemeToggleBtn) {
+    mobileThemeToggleBtn.addEventListener('click', toggleTheme);
+  }
+
+  // Set initial text on mobile toggle
+  const initialTheme = getSavedTheme();
+  setTheme(initialTheme);
+}
+
 

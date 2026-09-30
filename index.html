@@ -18,11 +18,17 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
           onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
 </head>
 <body>
 
-  <!-- Blurred AI Neural Background Layer -->
-  <div class="ai-bg-layer" style="background-image: url('assets/ai_bg.jpg');"></div>
+  <!-- AI Neural Background Layer -->
+  <div class="ai-bg-layer"></div>
   <div class="ai-bg-overlay"></div>
   <canvas id="neuralCanvas"></canvas>
   <div class="cyber-background"></div>
@@ -61,6 +67,28 @@
       </ul>
 
       <div class="nav-desktop-actions" style="display: flex; gap: 0.8rem; align-items: center;">
+        <!-- Theme Toggle Switch -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Light/Dark Theme" title="Toggle Light/Dark Theme">
+          <span class="theme-icon sun-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="m4.93 4.93 1.41 1.41"></path>
+              <path d="m17.66 17.66 1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="m6.34 17.66-1.41 1.41"></path>
+              <path d="m19.07 4.93-1.41 1.41"></path>
+            </svg>
+          </span>
+          <span class="theme-icon moon-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+          </span>
+        </button>
+
         <a href="assets/CV_HimanshuShelke.pdf" download class="btn-cyber btn-cyber-primary">
           <span>RESUME_PDF</span>
           <span>⤓</span>
@@ -89,7 +117,28 @@
         <li><a href="#honors" class="mobile-nav-link"><span class="prefix">05.</span>Honors</a></li>
         <li><a href="#dispatch" class="mobile-nav-link"><span class="prefix">06.</span>Dispatch</a></li>
       </ul>
-      <div class="mobile-nav-actions">
+      <div class="mobile-nav-actions" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; width: 100%;">
+        <button class="btn-cyber btn-cyber-outline mobile-theme-btn" id="mobileThemeToggleBtn" aria-label="Toggle Light and Dark Mode" style="justify-content: center; width: 100%;">
+          <span class="theme-icon sun-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="m4.93 4.93 1.41 1.41"></path>
+              <path d="m17.66 17.66 1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="m6.34 17.66-1.41 1.41"></path>
+              <path d="m19.07 4.93-1.41 1.41"></path>
+            </svg>
+          </span>
+          <span class="theme-icon moon-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+          </span>
+          <span class="theme-label-text">SWITCH_THEME</span>
+        </button>
         <a href="assets/CV_HimanshuShelke.pdf" download class="btn-cyber btn-cyber-primary" style="justify-content: center; width: 100%;">
           <span>DOWNLOAD_RESUME_PDF</span>
           <span>⤓</span>

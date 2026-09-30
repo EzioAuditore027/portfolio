@@ -26,6 +26,10 @@
   let animationId = null;
   let isRunning = true;
 
+  function isLightMode() {
+    return document.documentElement.getAttribute('data-theme') === 'light';
+  }
+
   // Node Class
   class NeuralNode {
     constructor() {
@@ -67,10 +71,11 @@
     }
 
     draw() {
+      const isLight = isLightMode();
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = this.color;
-      ctx.globalAlpha = this.baseAlpha;
+      ctx.fillStyle = isLight ? (this.color === '#38BDF8' ? '#0284C7' : '#6366F1') : this.color;
+      ctx.globalAlpha = isLight ? this.baseAlpha * 1.25 : this.baseAlpha;
       ctx.fill();
     }
   }
@@ -92,15 +97,17 @@
     }
 
     draw() {
+      const isLight = isLightMode();
       const currentX = this.start.x + (this.end.x - this.start.x) * this.progress;
       const currentY = this.start.y + (this.end.y - this.start.y) * this.progress;
 
       ctx.beginPath();
       ctx.arc(currentX, currentY, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = this.color;
-      ctx.globalAlpha = 0.85;
+      const signalColor = isLight ? (this.color === '#34D399' ? '#059669' : '#0284C7') : this.color;
+      ctx.fillStyle = signalColor;
+      ctx.globalAlpha = isLight ? 0.95 : 0.85;
       ctx.shadowBlur = 6;
-      ctx.shadowColor = this.color;
+      ctx.shadowColor = signalColor;
       ctx.fill();
       ctx.shadowBlur = 0; // reset
     }
@@ -126,6 +133,7 @@
     if (!isRunning) return;
 
     ctx.clearRect(0, 0, width, height);
+    const isLight = isLightMode();
 
     // Update and draw nodes
     for (let i = 0; i < nodes.length; i++) {
@@ -139,11 +147,11 @@
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < CONNECTION_DIST) {
-          const alpha = (1 - dist / CONNECTION_DIST) * 0.22;
+          const alpha = (1 - dist / CONNECTION_DIST) * (isLight ? 0.32 : 0.22);
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
           ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.strokeStyle = '#38BDF8';
+          ctx.strokeStyle = isLight ? '#0284C7' : '#38BDF8';
           ctx.globalAlpha = alpha;
           ctx.lineWidth = 1;
           ctx.stroke();
@@ -158,11 +166,11 @@
         const dy = mouse.y - nodes[i].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < MOUSE_DIST) {
-          const alpha = (1 - dist / MOUSE_DIST) * 0.28;
+          const alpha = (1 - dist / MOUSE_DIST) * (isLight ? 0.38 : 0.28);
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
           ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = '#818CF8';
+          ctx.strokeStyle = isLight ? '#6366F1' : '#818CF8';
           ctx.globalAlpha = alpha;
           ctx.lineWidth = 1;
           ctx.stroke();
