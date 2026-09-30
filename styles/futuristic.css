@@ -1177,9 +1177,25 @@ h1, h2, h3, h4, .futuristic-heading {
 }
 
 .uplink-icon {
-  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
   color: var(--accent-blue);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+}
+
+.uplink-icon svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.uplink-pod:hover .uplink-icon {
+  color: #FFFFFF;
+  transform: translateY(-2px);
 }
 
 .uplink-label {
